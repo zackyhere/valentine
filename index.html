@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Happy Valentine's Day! 💖</title>
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        background: '#fff0f5', 
+                        foreground: '#4a0420',
+                        primary: { DEFAULT: '#ff69b4', foreground: '#ffffff' },
+                        secondary: '#ffe4e1',
+                        accent: '#db2777', // Warna untuk teks "sayanggg"
+                        muted: { DEFAULT: '#fce7f3', foreground: '#db2777' },
+                    },
+                    fontFamily: {
+                        script: ['Pacifico', 'cursive'],
+                        sans: ['Quicksand', 'sans-serif']
+                    },
+                    animation: {
+                        'pulse-glow': 'pulseGlow 2s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+                        'float': 'float 3s ease-in-out infinite',
+                        'wiggle': 'wiggle 1s ease-in-out infinite',
+                    },
+                    keyframes: {
+                        pulseGlow: {
+                            '0%, 100%': { opacity: 1, transform: 'scale(1)', boxShadow: '0 0 20px rgba(255, 105, 180, 0.5)' },
+                            '50%': { opacity: .9, transform: 'scale(1.05)', boxShadow: '0 0 40px rgba(255, 105, 180, 0.8)' },
+                        },
+                        float: {
+                            '0%, 100%': { transform: 'translateY(0)' },
+                            '50%': { transform: 'translateY(-10px)' },
+                        },
+                        wiggle: {
+                            '0%, 100%': { transform: 'rotate(-3deg)' },
+                            '50%': { transform: 'rotate(3deg)' },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Quicksand:wght@400;600;700&display=swap" rel="stylesheet">
+
+    <style>
+        /* Floating Hearts Background (Sama seperti Album) */
+        .heart-bg {
+            position: fixed;
+            color: #ff69b4;
+            opacity: 0.3;
+            animation: floatUp 8s linear infinite;
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        @keyframes floatUp {
+            from { transform: translateY(100vh) scale(0.5); opacity: 0; }
+            50% { opacity: 0.5; }
+            to { transform: translateY(-10vh) scale(1); opacity: 0; }
+        }
+
+        /* Pola background */
+        body {
+            background-image: radial-gradient(circle, #ffdee9 2px, transparent 2px);
+            background-size: 30px 30px;
+        }
+    </style>
+</head>
+<body class="font-sans antialiased text-foreground bg-background overflow-hidden selection:bg-primary selection:text-white">
+
+    <div id="hearts-bg-container" class="absolute inset-0 pointer-events-none"></div>
+
+    <main class="relative flex min-h-screen flex-col items-center justify-center px-4 z-10">
+        
+        <div class="text-center space-y-4">
+            <h1 class="font-script text-6xl sm:text-7xl md:text-8xl text-primary drop-shadow-sm animate-float">
+                Happy Valentine's Day
+            </h1>
+            
+            <h2 class="font-script text-4xl sm:text-5xl text-accent mt-2 transform -rotate-2 inline-block">
+                sayanggg 💕
+            </h2>
+
+            <div class="mx-auto max-w-md py-6">
+                <p class="text-lg sm:text-xl text-muted-foreground bg-white/60 backdrop-blur-sm rounded-full px-6 py-2 border-2 border-dashed border-primary/30 inline-flex items-center gap-2 shadow-sm">
+                    <span class="text-2xl animate-wiggle">🐱</span> 
+                    <span class="italic">"miauu miauuu miauu miau miauuuu"</span>
+                </p>
+            </div>
+
+            <div class="pt-8 relative group">
+                <div class="absolute -inset-1 bg-gradient-to-r from-pink-400 to-primary rounded-full blur opacity-40 group-hover:opacity-75 transition duration-200"></div>
+                
+                <button
+                    id="love-btn"
+                    class="relative animate-pulse-glow bg-gradient-to-r from-pink-400 to-primary text-white rounded-full px-12 py-5 text-xl font-bold shadow-xl hover:scale-110 active:scale-95 transition-all duration-300 flex items-center gap-3 mx-auto tracking-wide"
+                    aria-label="Open my heart"
+                >
+                    Tap &lt;3 
+                    <span class="text-2xl">💌</span>
+                </button>
+            </div>
+        </div>
+
+    </main>
+
+    <script>
+        // --- 1. Logika Tombol & Confetti ---
+        const btn = document.getElementById('love-btn');
+
+        btn.addEventListener('click', (e) => {
+            // A. Efek Confetti (Burst)
+            // Mengambil koordinat tombol untuk pusat ledakan
+            const rect = btn.getBoundingClientRect();
+            // Normalisasi koordinat ke 0-1 untuk canvas-confetti
+            const x = (rect.left + rect.width / 2) / window.innerWidth;
+            const y = (rect.top + rect.height / 2) / window.innerHeight;
+
+            // Tembakkan Confetti!
+            confetti({
+                particleCount: 150,
+                spread: 100,
+                origin: { x: x, y: y },
+                colors: ['#ff69b4', '#ff1493', '#ffe4e1', '#ffffff'], // Warna pink & putih
+                shapes: ['circle', 'heart'], // Bentuk bulat dan hati
+                disableForReducedMotion: true
+            });
+
+            // Tembakkan sekali lagi sedikit lebih tinggi agar meriah
+            setTimeout(() => {
+                confetti({
+                    particleCount: 100,
+                    spread: 120,
+                    origin: { x: x, y: y - 0.1 },
+                    colors: ['#ff69b4', '#db2777'],
+                    shapes: ['heart']
+                });
+            }, 200);
+
+            // B. Navigasi (Delay 800ms seperti kode asli)
+            setTimeout(() => {
+                // Ganti 'album.html' dengan nama file halaman selanjutnya
+                // Jika ingin ke kode album sebelumnya, pastikan nama filenya 'album.html'
+                window.location.href = "album.html"; 
+            }, 1000); // Saya tambah sedikit delay biar confetti terlihat jelas
+        });
+
+        // --- 2. Floating Hearts Background (Hiasan) ---
+        function createBgHeart() {
+            const container = document.getElementById('hearts-bg-container');
+            const heart = document.createElement('div');
+            heart.classList.add('heart-bg');
+            heart.innerHTML = ['❤', '💖', '💕', '🥰', '🌸'][Math.floor(Math.random() * 5)];
+            
+            heart.style.left = Math.random() * 100 + 'vw';
+            heart.style.fontSize = (Math.random() * 1.5 + 0.5) + 'rem';
+            heart.style.animationDuration = (Math.random() * 5 + 5) + 's';
+            
+            container.appendChild(heart);
+
+            setTimeout(() => {
+                heart.remove();
+            }, 10000);
+        }
+
+        // Jalankan background hearts
+        setInterval(createBgHeart, 800);
+
+    </script>
+</body>
+</html>
