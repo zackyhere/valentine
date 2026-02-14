@@ -3,148 +3,187 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Happy Valentine's Day! 💖</title>
-    
+    <title>Happy Valentine's Day</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600&family=Patrick+Hand&display=swap" rel="stylesheet">
     
-    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
-
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    colors: {
-                        background: '#fff0f5', 
-                        foreground: '#4a0420',
-                        primary: { DEFAULT: '#ff69b4', foreground: '#ffffff' },
-                        secondary: '#ffe4e1',
-                        accent: '#db2777', 
-                        muted: { DEFAULT: '#fce7f3', foreground: '#db2777' },
-                    },
-                    fontFamily: {
-                        script: ['Pacifico', 'cursive'],
-                        sans: ['Quicksand', 'sans-serif']
-                    },
-                    animation: {
-                        'pulse-slow': 'pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite',
-                        'float': 'float 3s ease-in-out infinite',
-                    },
-                    keyframes: {
-                        float: {
-                            '0%, 100%': { transform: 'translateY(0)' },
-                            '50%': { transform: 'translateY(-10px)' },
-                        }
-                    }
-                }
-            }
-        }
-    </script>
-
-    <link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Quicksand:wght@400;600;700&display=swap" rel="stylesheet">
-
     <style>
         body {
-            background-image: radial-gradient(circle, #ffdee9 2px, transparent 2px);
-            background-size: 30px 30px;
+            font-family: 'Fredoka', sans-serif;
+            background-color: #FFD1DC;
+            overflow-x: hidden;
         }
-        /* Hiasan background hati */
-        .heart-bg {
-            position: fixed;
-            color: #ff69b4;
-            opacity: 0.3;
-            animation: floatUp 8s linear infinite;
-            z-index: 0;
-            pointer-events: none;
+
+        .handwritten { font-family: 'Patrick Hand', cursive; }
+
+        /* Animasi Tombol */
+        .pulse-anim {
+            animation: pulse-custom 2s infinite;
         }
-        @keyframes floatUp {
-            from { transform: translateY(100vh) scale(0.5); opacity: 0; }
-            50% { opacity: 0.5; }
-            to { transform: translateY(-10vh) scale(1); opacity: 0; }
+        @keyframes pulse-custom {
+            0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(126, 21, 53, 0.7); }
+            70% { transform: scale(1.05); box-shadow: 0 0 0 10px rgba(126, 21, 53, 0); }
+            100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(126, 21, 53, 0); }
+        }
+
+        /* Ilustrasi Kalender CSS */
+        .calendar-container {
+            transform: rotate(-2deg);
+            transition: transform 0.3s ease;
+        }
+        .calendar-container:hover { transform: rotate(0deg) scale(1.05); }
+
+        /* Animasi Fade */
+        .fade-in { animation: fadeIn 0.5s forwards; }
+        .fade-out { animation: fadeOut 0.5s forwards; }
+
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes fadeOut { from { opacity: 1; transform: translateY(0); } to { opacity: 0; transform: translateY(-10px); } }
+        
+        /* Styling untuk GIF agar rapi */
+        .gif-container img {
+            max-height: 180px; /* Menjaga tinggi agar layout tidak lompat */
+            filter: drop-shadow(0 4px 6px rgba(0,0,0,0.1));
+            border-radius: 12px;
         }
     </style>
 </head>
-<body class="font-sans antialiased text-foreground bg-background overflow-hidden selection:bg-primary selection:text-white">
+<body class="min-h-screen flex flex-col items-center justify-center p-4 relative">
 
-    <div id="hearts-bg-container" class="absolute inset-0 pointer-events-none"></div>
-
-    <main class="relative flex min-h-screen flex-col items-center justify-center px-4 z-10">
+    <div id="content-card" class="flex flex-col items-center justify-center w-full max-w-md text-center space-y-6 transition-all duration-500">
         
-        <div class="text-center w-full max-w-2xl">
-            <h1 class="font-script text-5xl sm:text-7xl md:text-8xl text-primary drop-shadow-sm animate-float">
-                Happy Valentine's Day
-            </h1>
+        <!-- AREA GAMBAR (Akan berubah dari Kalender ke GIF) -->
+        <div id="illustration-area" class="h-52 flex items-center justify-center">
             
-            <h2 class="font-script text-3xl sm:text-5xl text-accent mt-2 transform -rotate-2 inline-block">
-                sayanggg 💕
-            </h2>
-
-            <div class="mx-auto max-w-lg py-8">
-                <p class="text-lg sm:text-xl text-muted-foreground bg-white/60 backdrop-blur-sm rounded-full px-6 py-3 border-2 border-dashed border-primary/30 inline-flex items-center gap-2 shadow-sm hover:scale-105 transition-transform cursor-default">
-                    <span class="text-2xl animate-bounce"></span> 
-                    <span class="italic font-semibold">there's more waiting... click to find out</span>
-                </p>
+            <!-- Default: Kalender (Tampil Awal) -->
+            <div id="calendar-wrapper" class="calendar-container relative w-48 h-44 bg-white border-4 border-gray-800 rounded-xl shadow-lg">
+                <div class="h-10 bg-[#FF6B6B] border-b-4 border-gray-800 rounded-t-lg relative">
+                    <div class="absolute -top-3 left-4 w-2 h-6 bg-[#E0E0E0] border-2 border-gray-800 rounded-full"></div>
+                    <div class="absolute -top-3 left-10 w-2 h-6 bg-[#E0E0E0] border-2 border-gray-800 rounded-full"></div>
+                    <div class="absolute -top-3 left-16 w-2 h-6 bg-[#E0E0E0] border-2 border-gray-800 rounded-full"></div>
+                    <div class="absolute -top-3 right-16 w-2 h-6 bg-[#E0E0E0] border-2 border-gray-800 rounded-full"></div>
+                    <div class="absolute -top-3 right-10 w-2 h-6 bg-[#E0E0E0] border-2 border-gray-800 rounded-full"></div>
+                    <div class="absolute -top-3 right-4 w-2 h-6 bg-[#E0E0E0] border-2 border-gray-800 rounded-full"></div>
+                </div>
+                <div class="p-2 flex flex-col h-full">
+                    <div class="text-left text-gray-600 text-xs font-bold tracking-widest ml-1 handwritten uppercase">February</div>
+                    <div class="flex items-end justify-between mt-1 px-1 h-20">
+                        <span class="text-[#FF6B6B] text-6xl font-bold handwritten leading-none" style="text-shadow: 2px 2px 0px #333;">14</span>
+                        <div class="w-14 h-16 bg-[#FDE047] border-2 border-gray-800 rounded flex items-center justify-center transform rotate-3 mb-1 shadow-sm">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10 text-[#FF6B6B] stroke-gray-800 stroke-2 fill-current" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
+                            </svg>
+                        </div>
+                    </div>
+                </div>
             </div>
 
-            <div class="relative group w-fit mx-auto mt-4">
-                
-                <div class="absolute -inset-1 bg-gradient-to-r from-pink-400 to-primary rounded-full blur opacity-40 group-hover:opacity-75 transition duration-200"></div>
-                
-                <button
-                    id="love-btn"
-                    class="relative bg-white text-primary border-2 border-primary/20 hover:bg-primary hover:text-white rounded-full px-10 py-4 text-xl font-bold shadow-lg transform transition-all duration-300 hover:scale-105 hover:rotate-1 flex items-center gap-2"
-                >
-                    Tap &lt;3 
-                    <span class="text-xl">💌</span>
-                </button>
-            </div>
         </div>
 
-    </main>
+        <!-- AREA TEKS -->
+        <div id="text-area" class="space-y-2 fade-in px-4">
+            <h1 id="main-title" class="text-3xl md:text-4xl font-bold text-[#9D174D] leading-tight drop-shadow-sm">
+                happy valentine's dayy<br>sayangg!!
+            </h1>
+            <p id="sub-title" class="text-[#9D174D] text-sm opacity-80 mt-4 handwritten text-lg">
+                there's more waiting... click to find out ✨
+            </p>
+        </div>
+
+        <!-- TOMBOL -->
+        <button onclick="nextStep()" id="action-btn" class="pulse-anim bg-[#590D22] text-white px-8 py-3 rounded-full font-medium text-lg hover:bg-[#701a35] transition-colors focus:outline-none focus:ring-4 focus:ring-pink-300 relative z-10 shadow-lg border-2 border-white/30">
+            tap &lt;3
+        </button>
+    </div>
 
     <script>
-        const btn = document.getElementById('love-btn');
+        let step = 0;
 
-        btn.addEventListener('click', () => {
-            // Efek Confetti
-            const rect = btn.getBoundingClientRect();
-            const x = (rect.left + rect.width / 2) / window.innerWidth;
-            const y = (rect.top + rect.height / 2) / window.innerHeight;
+        // Data Pesan Surprise (Menggunakan GIF)
+        const contents = [
+            {
+                // Surprise 1: Terima kasih (GIF Peluk/Sayang)
+                gif: "https://i.pinimg.com/originals/7d/b2/ec/7db2ec038efac4a20325f2144ca4ff03.gif", 
+                title: "",
+                subtitle: "Makasih banyak ya udah mau kenal aku lagi dan nemenin aku sampai sekarang. Aku seneng banget bisa ditemenin sama kamu ❤️",
+                btn: ":3"
+            },
+            {
+                // Surprise 2: Minta maaf/Sibuk (GIF Sedih/Pleading/LDR)
+                gif: "https://media.tenor.com/yVORhJ_dYNQAAAAj/bubu-dudu-sseeyall.gif",
+                title: "",
+                subtitle: "Maaf ya sayang kalau kita belum bisa seromantis yang lain. Maaf kalo aku suka sibuk dengan duniaku yang amat berantakan ini. aku usahain buat yang terbaik kok :/",
+                btn: ":( >"
+            },
+            {
+                // Surprise 3: Doa Kampus Impian (GIF Belajar/Semangat)
+                gif: "https://media.tenor.com/ZYsOQeFXpmwAAAAM/cat-meow.gif",
+                title: "Btw Aku doain Semoga kamu bisa masuk kampus impian kamu ituu",
+                subtitle: "Aamiin paling kencenggg! 🤲",
+                btn: "Aamiinnn... >"
+            },
+            {
+                // Surprise 4: Tambah Cinta (GIF Malu/Love)
+                gif: "https://i.pinimg.com/originals/da/11/01/da1101aa3ef49462f19519706075d513.gif",
+                title: "Satu lagi...",
+                subtitle: "Semoga kamu tambah cinta buanyakkkk sama aku ehekkk 😋",
+                btn: "Iya donggg.. izin🫷🤪💐🫰"
+            },
+            {
+                // Surprise 5: Doa Terbaik & Redirect (GIF Happy/Camera)
+                gif: "https://media.tenor.com/uSUkySupnnUAAAAj/tkthao219-bubududu.gif",
+                title: "No matter what happens, I’m always praying for your happiness and success.",
+                subtitle: "🫶💐🫰",
+                btn: "Our memory 📸"
+            }
+        ];
 
-            confetti({
-                particleCount: 150,
-                spread: 100,
-                origin: { x: x, y: y },
-                colors: ['#ff69b4', '#ff1493', '#ffe4e1'],
-                shapes: ['heart'], 
-                scalar: 2 // Ukuran hati lebih besar dikit
-            });
+        function nextStep() {
+            const textArea = document.getElementById('text-area');
+            const illustArea = document.getElementById('illustration-area');
+            const actionBtn = document.getElementById('action-btn');
 
-            // Delay pindah halaman
-            setTimeout(() => {
-                // Pastikan nama file tujuan sesuai (misal: album.html)
-                window.location.href = "wish.html"; 
-            }, 1500);
-        });
-
-        // Background Hearts
-        function createBgHeart() {
-            const container = document.getElementById('hearts-bg-container');
-            const heart = document.createElement('div');
-            heart.classList.add('heart-bg');
-            heart.innerHTML = ['❤', '💖', '💕', '🥰', '🌸'][Math.floor(Math.random() * 5)];
+            // Cek apakah ini langkah terakhir (Redirect ke /our-pict)
+            if (step === contents.length) {
+                // Redirect ke halaman foto
+                window.location.href = '/album.html'; 
+                return;
+            }
             
-            heart.style.left = Math.random() * 100 + 'vw';
-            heart.style.fontSize = (Math.random() * 1.5 + 0.5) + 'rem';
-            heart.style.animationDuration = (Math.random() * 5 + 5) + 's';
-            
-            container.appendChild(heart);
+            // Efek Fade Out
+            textArea.classList.remove('fade-in');
+            textArea.classList.add('fade-out');
+            illustArea.classList.remove('fade-in');
+            illustArea.classList.add('fade-out');
 
             setTimeout(() => {
-                heart.remove();
-            }, 10000);
+                // Update Konten
+                if (step < contents.length) {
+                    const content = contents[step];
+                    
+                    // Ganti Kalender/Gambar dengan GIF
+                    illustArea.innerHTML = `
+                        <div class="gif-container fade-in">
+                            <img src="${content.gif}" alt="Cute GIF" class="rounded-xl shadow-md border-2 border-white/50">
+                        </div>
+                    `;
+                    
+                    // Ganti Teks
+                    document.getElementById('main-title').innerHTML = content.title;
+                    document.getElementById('sub-title').innerHTML = content.subtitle;
+                    document.getElementById('action-btn').innerText = content.btn;
+                    
+                    step++;
+                }
+
+                // Efek Fade In
+                textArea.classList.remove('fade-out');
+                textArea.classList.add('fade-in');
+                illustArea.classList.remove('fade-out');
+                illustArea.classList.add('fade-in');
+            }, 500); 
         }
-
-        setInterval(createBgHeart, 800);
     </script>
 </body>
 </html>
+
