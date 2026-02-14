@@ -18,7 +18,7 @@
                         foreground: '#4a0420',
                         primary: { DEFAULT: '#ff69b4', foreground: '#ffffff' },
                         secondary: '#ffe4e1',
-                        accent: '#db2777', // Warna untuk teks "sayanggg"
+                        accent: '#db2777', 
                         muted: { DEFAULT: '#fce7f3', foreground: '#db2777' },
                     },
                     fontFamily: {
@@ -26,22 +26,13 @@
                         sans: ['Quicksand', 'sans-serif']
                     },
                     animation: {
-                        'pulse-glow': 'pulseGlow 2s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+                        'pulse-slow': 'pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite',
                         'float': 'float 3s ease-in-out infinite',
-                        'wiggle': 'wiggle 1s ease-in-out infinite',
                     },
                     keyframes: {
-                        pulseGlow: {
-                            '0%, 100%': { opacity: 1, transform: 'scale(1)', boxShadow: '0 0 20px rgba(255, 105, 180, 0.5)' },
-                            '50%': { opacity: .9, transform: 'scale(1.05)', boxShadow: '0 0 40px rgba(255, 105, 180, 0.8)' },
-                        },
                         float: {
                             '0%, 100%': { transform: 'translateY(0)' },
                             '50%': { transform: 'translateY(-10px)' },
-                        },
-                        wiggle: {
-                            '0%, 100%': { transform: 'rotate(-3deg)' },
-                            '50%': { transform: 'rotate(3deg)' },
                         }
                     }
                 }
@@ -52,7 +43,11 @@
     <link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Quicksand:wght@400;600;700&display=swap" rel="stylesheet">
 
     <style>
-        /* Floating Hearts Background (Sama seperti Album) */
+        body {
+            background-image: radial-gradient(circle, #ffdee9 2px, transparent 2px);
+            background-size: 30px 30px;
+        }
+        /* Hiasan background hati */
         .heart-bg {
             position: fixed;
             color: #ff69b4;
@@ -61,17 +56,10 @@
             z-index: 0;
             pointer-events: none;
         }
-
         @keyframes floatUp {
             from { transform: translateY(100vh) scale(0.5); opacity: 0; }
             50% { opacity: 0.5; }
             to { transform: translateY(-10vh) scale(1); opacity: 0; }
-        }
-
-        /* Pola background */
-        body {
-            background-image: radial-gradient(circle, #ffdee9 2px, transparent 2px);
-            background-size: 30px 30px;
         }
     </style>
 </head>
@@ -81,32 +69,32 @@
 
     <main class="relative flex min-h-screen flex-col items-center justify-center px-4 z-10">
         
-        <div class="text-center space-y-4">
-            <h1 class="font-script text-6xl sm:text-7xl md:text-8xl text-primary drop-shadow-sm animate-float">
+        <div class="text-center w-full max-w-2xl">
+            <h1 class="font-script text-5xl sm:text-7xl md:text-8xl text-primary drop-shadow-sm animate-float">
                 Happy Valentine's Day
             </h1>
             
-            <h2 class="font-script text-4xl sm:text-5xl text-accent mt-2 transform -rotate-2 inline-block">
+            <h2 class="font-script text-3xl sm:text-5xl text-accent mt-2 transform -rotate-2 inline-block">
                 sayanggg 💕
             </h2>
 
-            <div class="mx-auto max-w-md py-6">
-                <p class="text-lg sm:text-xl text-muted-foreground bg-white/60 backdrop-blur-sm rounded-full px-6 py-2 border-2 border-dashed border-primary/30 inline-flex items-center gap-2 shadow-sm">
-                    <span class="text-2xl animate-wiggle">🐱</span> 
-                    <span class="italic">"miauu miauuu miauu miau miauuuu"</span>
+            <div class="mx-auto max-w-lg py-8">
+                <p class="text-lg sm:text-xl text-muted-foreground bg-white/60 backdrop-blur-sm rounded-full px-6 py-3 border-2 border-dashed border-primary/30 inline-flex items-center gap-2 shadow-sm hover:scale-105 transition-transform cursor-default">
+                    <span class="text-2xl animate-bounce"></span> 
+                    <span class="italic font-semibold">there's more waiting... click to find out</span>
                 </p>
             </div>
 
-            <div class="pt-8 relative group">
+            <div class="relative group w-fit mx-auto mt-4">
+                
                 <div class="absolute -inset-1 bg-gradient-to-r from-pink-400 to-primary rounded-full blur opacity-40 group-hover:opacity-75 transition duration-200"></div>
                 
                 <button
                     id="love-btn"
-                    class="relative animate-pulse-glow bg-gradient-to-r from-pink-400 to-primary text-white rounded-full px-12 py-5 text-xl font-bold shadow-xl hover:scale-110 active:scale-95 transition-all duration-300 flex items-center gap-3 mx-auto tracking-wide"
-                    aria-label="Open my heart"
+                    class="relative bg-white text-primary border-2 border-primary/20 hover:bg-primary hover:text-white rounded-full px-10 py-4 text-xl font-bold shadow-lg transform transition-all duration-300 hover:scale-105 hover:rotate-1 flex items-center gap-2"
                 >
                     Tap &lt;3 
-                    <span class="text-2xl">💌</span>
+                    <span class="text-xl">💌</span>
                 </button>
             </div>
         </div>
@@ -114,47 +102,31 @@
     </main>
 
     <script>
-        // --- 1. Logika Tombol & Confetti ---
         const btn = document.getElementById('love-btn');
 
-        btn.addEventListener('click', (e) => {
-            // A. Efek Confetti (Burst)
-            // Mengambil koordinat tombol untuk pusat ledakan
+        btn.addEventListener('click', () => {
+            // Efek Confetti
             const rect = btn.getBoundingClientRect();
-            // Normalisasi koordinat ke 0-1 untuk canvas-confetti
             const x = (rect.left + rect.width / 2) / window.innerWidth;
             const y = (rect.top + rect.height / 2) / window.innerHeight;
 
-            // Tembakkan Confetti!
             confetti({
                 particleCount: 150,
                 spread: 100,
                 origin: { x: x, y: y },
-                colors: ['#ff69b4', '#ff1493', '#ffe4e1', '#ffffff'], // Warna pink & putih
-                shapes: ['circle', 'heart'], // Bentuk bulat dan hati
-                disableForReducedMotion: true
+                colors: ['#ff69b4', '#ff1493', '#ffe4e1'],
+                shapes: ['heart'], 
+                scalar: 2 // Ukuran hati lebih besar dikit
             });
 
-            // Tembakkan sekali lagi sedikit lebih tinggi agar meriah
+            // Delay pindah halaman
             setTimeout(() => {
-                confetti({
-                    particleCount: 100,
-                    spread: 120,
-                    origin: { x: x, y: y - 0.1 },
-                    colors: ['#ff69b4', '#db2777'],
-                    shapes: ['heart']
-                });
-            }, 200);
-
-            // B. Navigasi (Delay 800ms seperti kode asli)
-            setTimeout(() => {
-                // Ganti 'album.html' dengan nama file halaman selanjutnya
-                // Jika ingin ke kode album sebelumnya, pastikan nama filenya 'album.html'
-                window.location.href = "album.html"; 
-            }, 1000); // Saya tambah sedikit delay biar confetti terlihat jelas
+                // Pastikan nama file tujuan sesuai (misal: album.html)
+                window.location.href = "wish.html"; 
+            }, 1500);
         });
 
-        // --- 2. Floating Hearts Background (Hiasan) ---
+        // Background Hearts
         function createBgHeart() {
             const container = document.getElementById('hearts-bg-container');
             const heart = document.createElement('div');
@@ -172,9 +144,7 @@
             }, 10000);
         }
 
-        // Jalankan background hearts
         setInterval(createBgHeart, 800);
-
     </script>
 </body>
 </html>
