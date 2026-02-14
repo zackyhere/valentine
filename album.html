@@ -41,7 +41,6 @@
     <link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Quicksand:wght@400;500;600;700&display=swap" rel="stylesheet">
 
     <style>
-        /* Custom Animations */
         @keyframes fadeInUp {
             from { opacity: 0; transform: translateY(20px) scale(0.95); }
             to { opacity: 1; transform: translateY(0) scale(1); }
@@ -80,17 +79,17 @@
 </head>
 <body class="font-sans antialiased text-foreground bg-background overflow-x-hidden">
 
-    <main class="relative min-h-screen bg-gradient-to-b from-background via-secondary/50 to-background px-4 py-16">
+    <main class="relative min-h-screen bg-gradient-to-b from-background via-secondary/50 to-background px-2 py-12 sm:px-4 sm:py-16">
         
         <div id="hearts-container" class="absolute inset-0 pointer-events-none overflow-hidden"></div>
 
         <div class="relative z-10 mx-auto max-w-5xl">
-            <header class="text-center mb-12">
-                <h1 class="font-script animate-fade-in-up mb-3 text-5xl text-primary sm:text-7xl drop-shadow-sm" style="animation-delay: 0ms;">
+            <header class="text-center mb-8 sm:mb-12">
+                <h1 class="font-script animate-fade-in-up mb-3 text-4xl text-primary sm:text-7xl drop-shadow-sm" style="animation-delay: 0ms;">
                     ✨ my Love photo albums ✨
                 </h1>
                 <p class="text-lg text-muted-foreground font-semibold animate-fade-in-up flex items-center justify-center gap-2" style="animation-delay: 150ms;">
-                    </p>
+                </p>
             </header>
 
             <div id="loading" class="text-center text-primary font-script text-2xl animate-bounce py-10">
@@ -101,7 +100,7 @@
                 Ups! Gagal memuat foto-foto lucu kita. Coba refresh ya! 🥺
             </div>
 
-            <div id="photo-grid" class="columns-1 sm:columns-2 lg:columns-3 gap-8 px-4 sm:px-0 space-y-8">
+            <div id="photo-grid" class="columns-2 sm:columns-2 lg:columns-3 gap-3 sm:gap-8 space-y-4 sm:space-y-8">
             </div>
             
             <footer class="mt-16 text-center text-sm text-muted-foreground font-semibold">
@@ -160,33 +159,26 @@
 
                 const button = document.createElement('button');
                 
-                // MODIFIKASI 2:
-                // - Hapus 'h-full'
-                // - Tambah 'break-inside-avoid' agar kartu tidak terpotong antar kolom
-                // - Tambah 'mb-8' untuk memberi jarak bawah karena kita tidak pakai grid gap vertikal lagi
-                // - Tambah 'w-full' dan 'inline-block' agar layout masonry rapi
-                button.className = `group relative animate-fade-in-up cursor-pointer p-4 bg-white rounded-[28px] shadow-cute transition-all duration-500 hover:scale-105 ${randomRotate} hover:shadow-cute-hover focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-primary/50 break-inside-avoid mb-8 w-full inline-block`;
+                button.className = `group relative animate-fade-in-up cursor-pointer p-2 sm:p-4 bg-white rounded-[20px] sm:rounded-[28px] shadow-cute transition-all duration-500 hover:scale-105 ${randomRotate} hover:shadow-cute-hover focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-primary/50 break-inside-avoid mb-4 sm:mb-8 w-full inline-block`;
                 
                 button.style.animationDelay = `${delay}ms`;
                 button.onclick = () => openLightbox(index);
                 button.setAttribute('aria-label', `Lihat ${caption}`);
 
                 button.innerHTML = `
-                    <div class="relative w-full overflow-hidden rounded-[20px] border-4 border-dashed border-primary/40 p-1.5 bg-secondary/20">
+                    <div class="relative w-full overflow-hidden rounded-[16px] sm:rounded-[20px] border-2 sm:border-4 border-dashed border-primary/40 p-1 sm:p-1.5 bg-secondary/20">
                         <img
                             src="${photoUrl}"
                             alt="${caption}"
                             loading="lazy"
-                            class="w-full h-auto rounded-[16px] transition-transform duration-700 group-hover:scale-110"
+                            class="w-full h-auto rounded-[12px] sm:rounded-[16px] transition-transform duration-700 group-hover:scale-110"
                         />
-                        <div class="absolute inset-0 flex items-center justify-center bg-primary/40 backdrop-blur-[2px] p-3 opacity-0 transition-all duration-300 group-hover:opacity-100 rounded-[20px]">
-                            <span class="text-2xl font-script text-white drop-shadow-[0_2px_2px_rgba(0,0,0,0.3)] transform scale-90 transition-transform duration-300 group-hover:scale-110">
+                        <div class="absolute inset-0 flex items-center justify-center bg-primary/40 backdrop-blur-[2px] p-2 opacity-0 transition-all duration-300 group-hover:opacity-100 rounded-[16px] sm:rounded-[20px]">
+                            <span class="text-lg sm:text-2xl font-script text-white drop-shadow-[0_2px_2px_rgba(0,0,0,0.3)] transform scale-90 transition-transform duration-300 group-hover:scale-110">
                                 ${caption} 💖
                             </span>
                         </div>
                     </div>
-                    <div class="absolute top-1 left-2 text-xl opacity-80 transform -rotate-12">✨</div>
-                    <div class="absolute bottom-1 right-2 text-xl opacity-80 transform rotate-12">🌸</div>
                 `;
 
                 gridContainer.appendChild(button);
